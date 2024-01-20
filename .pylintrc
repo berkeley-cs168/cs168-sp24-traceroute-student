@@ -1,0 +1,8 @@
+[MESSAGES CONTROL]
+
+disable=
+    fixme,
+    missing-class-docstring,
+    missing-docstring,
+    too-few-public-methods,
+    too-many-instance-attributes
