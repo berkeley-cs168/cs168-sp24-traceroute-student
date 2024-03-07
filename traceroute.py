@@ -18,7 +18,6 @@ TRACEROUTE_PORT_NUMBER = 33434  # Cisco traceroute port number.
 # single router before giving up and moving on.
 PROBE_ATTEMPT_COUNT = 3
 
-
 class IPv4:
     # Each member below is a field from the IPv4 packet header.  They are
     # listed below in the order they appear in the packet.  All fields should
@@ -86,6 +85,7 @@ class UDP:
         return f"UDP (src_port {self.src_port}, dst_port {self.dst_port}, " + \
             f"len {self.len}, cksum 0x{self.cksum:x})"
 
+# TODO feel free to add helper functions if you'd like
 
 def traceroute(sendsock: util.Socket, recvsock: util.Socket, ip: str) \
         -> list[list[str]]:
@@ -107,6 +107,7 @@ def traceroute(sendsock: util.Socket, recvsock: util.Socket, ip: str) \
     should be included as the final element in the list.
     """
 
+    # TODO Add your implementation
     for ttl in range(1, TRACEROUTE_MAX_TTL+1):
         util.print_result([], ttl)
     return []
