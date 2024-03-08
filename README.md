@@ -67,6 +67,26 @@ You are encouraged to set up the professional traceroute implementation for your
 While you may read the source of *professional traceroute implementations*, you **may** not read the source of any other traceroute implementations. This includes other students code, random implementations found on GitHub, or AI-generated implementations. As a general rule of thumb, if it was written in python, you may not look at it. When in doubt, ask the staff.
 ### Checksums
 "Good network code" would validate checksums of the IP, ICMP, and UDP headers they receive, and generate valid checksums for any packets generated. To keep the project at a reasonable scope, we do not ask that you validate checksums. This means that you can skip generating or checking checksums for any packets that you receive or send.
+### Socket Class
+Make sure to read all the code and comments in `util.py` carefully. Much of it will be necessary to complete the project successfully. To address some frequently asked questions, we comment on some of the most important methods here.
+#### sendto()
+`sendto()` takes a bytes object and a tuple containing a destination IP and port. It creates a UDP packet with the provided bytes as the payload and sends it to the provided address on the provided port. For clarity, by "UDP Packet" we mean an IPv4 packet with protocol type UDP, followed by a UDP header with the provided destination port, followed by the provided payload.
+##### Example
+```
+sendsock.sendto("Hello".encode(), ("4.4.4.4", 3343))
+```
+#### recv_select()
+`recv_select()` checks if its socket has any packets available to be received by `recvfrom()`. If the receive queue has at least one packet to be received, it returns true. Otherwise, it blocks until a packet is available or a timeout expires. If the timeout expires, it returns False.
+#### recvfrom()
+Receives a single packet from its socket. This packet is returned in the form of a `bytes` object that begins with the IPv4 header, and is followed by the payload of the IPv4 packet (be that ICMP, UDP, or whatever else). It also returns a tuple containing the source address and port that sent the packet. If there is no packet to be received, `recvfrom()` throws an exception. Call `recv_select()` to check for packets before making calls to `recvfrom()`.
+
+Note that python prints bytes objects in a slightly wonky format, it may be useful to convert to hex using the `.hex()` method before printing.
+##### Example
+```
+if recvsock.recv_select():
+    buf, address = recvsock.recvfrom()
+    print(buf.hex(), address[0])
+```
 ## Manual Testing
 While the project can be completed using just the Autograder for testing, it was designed to be easy to run from the command line. Doing some manual testing can be a good way to get a feel for how traceroute works, check how your solution compares to a professional implementation, and reduce the iteration time as you're debugging. Again, this is optional, it is completely possible to get a perfect score on the project without ever running it manually. That said, we do recommend trying it out.
 
